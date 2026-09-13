@@ -10,9 +10,6 @@ services:
       - SERVER_PORT=8081
       - JAVA_TOOL_OPTIONS=-Dzip.minInflateRatio=0.01
       - HOST_IP=${HOST_IP:-localhost}
-      # Dieser BaSyx-SNAPSHOT-Build (Spring Boot 4.1.1) erwartet "spring.mongodb.uri"
-      # statt "spring.data.mongodb.uri" aus der aas-env.properties -> sonst Timeout
-      # gegen localhost und der Health-Check haengt sich 30s lang auf.
       - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-env?authSource=admin
     volumes:
       - ./aas:/application/aas
@@ -90,9 +87,6 @@ services:
     container_name: aas-discovery
     environment:
       - SERVER_PORT=8081
-      # Dieser BaSyx-SNAPSHOT-Build (Spring Boot 4.1.1) erwartet "spring.mongodb.uri"
-      # statt "spring.data.mongodb.host" aus der aas-discovery.properties -> sonst
-      # Timeout gegen localhost und der Health-Check haengt sich 30s lang auf.
       - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-discovery?authSource=admin
     volumes:
       - ./basyx/aas-discovery.properties:/application/application.properties
@@ -146,8 +140,6 @@ services:
       - basyx-network
 
   aas-web-ui:
-    # Eclipse BaSyx AAS Web UI extended with Vue 3 plugins
-    # (WebIframeViewer + GrafanaDashboardViewer).
     image: ghcr.io/mahmoud-mustafa-se/basyx-aas-web-ui-extended:v1.0.0
     container_name: aas-ui
     ports:
@@ -216,7 +208,6 @@ services:
       context: ./databridge
     container_name: databridge-official
     volumes:
-      # Generated automatically by generate_databridge_config_GUI.py
       - ./CustomDatabridge/official-config:/usr/share/config
     networks:
       - basyx-network
