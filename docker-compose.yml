@@ -138,7 +138,7 @@ services:
   aas-web-ui:
     # Eclipse BaSyx AAS Web UI extended with Vue 3 plugins
     # (WebIframeViewer + GrafanaDashboardViewer).
-    image: ghcr.io/alnasir-mahmoud/basyx-aas-web-ui-extended:v1.0.0
+    image: ghcr.io/mahmoud-mustafa-se/basyx-aas-web-ui-extended:v1.0.0
     container_name: aas-ui
     ports:
       - "${UI_PORT:-3000}:3000"
