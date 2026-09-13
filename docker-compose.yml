@@ -10,6 +10,10 @@ services:
       - SERVER_PORT=8081
       - JAVA_TOOL_OPTIONS=-Dzip.minInflateRatio=0.01
       - HOST_IP=${HOST_IP:-localhost}
+      # Dieser BaSyx-SNAPSHOT-Build (Spring Boot 4.1.1) erwartet "spring.mongodb.uri"
+      # statt "spring.data.mongodb.uri" aus der aas-env.properties -> sonst Timeout
+      # gegen localhost und der Health-Check haengt sich 30s lang auf.
+      - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-env?authSource=admin
     volumes:
       - ./aas:/application/aas
       - ./basyx/aas-env.properties:/application/application.properties
@@ -42,6 +46,7 @@ services:
       - '${AAS_REGISTRY_PORT:-8082}:8081'
     environment:
       - SERVER_PORT=8081
+      - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017
     volumes:
       - ./basyx/aas-registry.yml:/workspace/config/application.yml
     restart: always
@@ -64,6 +69,7 @@ services:
       - '${SM_REGISTRY_PORT:-8083}:8081'
     environment:
       - SERVER_PORT=8081
+      - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017
     volumes:
       - ./basyx/sm-registry.yml:/workspace/config/application.yml
     restart: always
@@ -84,6 +90,10 @@ services:
     container_name: aas-discovery
     environment:
       - SERVER_PORT=8081
+      # Dieser BaSyx-SNAPSHOT-Build (Spring Boot 4.1.1) erwartet "spring.mongodb.uri"
+      # statt "spring.data.mongodb.host" aus der aas-discovery.properties -> sonst
+      # Timeout gegen localhost und der Health-Check haengt sich 30s lang auf.
+      - SPRING_MONGODB_URI=mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-discovery?authSource=admin
     volumes:
       - ./basyx/aas-discovery.properties:/application/application.properties
     ports:
