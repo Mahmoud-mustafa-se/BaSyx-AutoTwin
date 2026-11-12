@@ -158,13 +158,11 @@
 <script lang="ts" setup>
 import { defineOptions, onMounted, ref, computed } from 'vue';
 
-// Plugin-Definition
 defineOptions({
     name: 'ContainerControlPlugin',
     semanticId: 'https://example.com/plugins/container-control',
 });
 
-// Props
 const props = defineProps({
     submodelElementData: {
         type: Object as any,
@@ -172,7 +170,6 @@ const props = defineProps({
     },
 });
 
-// Reactive Variables
 const containerName = ref<string>('');
 const containerStatus = ref<string>('unknown');
 const containerInfo = ref<any>({});
@@ -187,7 +184,6 @@ const messageType = ref<string>('info');
 // is picked up automatically when accessed from an external machine.
 const API_BASE = `http://${window.location.hostname}:8090`;
 
-// Methods
 function getStatusColor(): string {
     switch (containerStatus.value) {
         case 'running': return 'success';
@@ -348,7 +344,6 @@ async function initializePlugin() {
     try {
         const data = props.submodelElementData;
         
-        // Container-Name aus Property extrahieren
         if (data.modelType === 'Property' && data.value) {
             containerName.value = data.value;
         } else if (data.value && typeof data.value === 'string') {
@@ -357,7 +352,6 @@ async function initializePlugin() {
             throw new Error('Kein Container-Name in SubmodelElement gefunden');
         }
         
-        // Initial Status laden
         await refreshStatus();
         await refreshLogs();
         
@@ -367,7 +361,6 @@ async function initializePlugin() {
     }
 }
 
-// Lifecycle
 onMounted(() => {
     initializePlugin();
 });

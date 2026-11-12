@@ -1,6 +1,6 @@
 # Eclipse BaSyx DataBridge — https://github.com/eclipse-basyx/basyx-databridge
 # Runtime container for the official BaSyx DataBridge (Java).
-# The JAR and lib/ are taken from the Eclipse BaSyx project (Apache 2.0 License).
+# The JAR and lib/ are taken from the Eclipse BaSyx project (MIT License).
 # Customised here: base image changed from milestone-08 to eclipse-temurin:11 +
 #   SNAPSHOT jar + manual PLC4X Modbus driver add (milestone-08 has a Modbus polling bug).
 FROM eclipse-temurin:11

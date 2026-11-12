@@ -1,0 +1,34 @@
+BaSyx-AutoTwin
+Copyright (c) 2026 Mahmoud Mustafa
+Lehrstuhl für Automatisierung und Energiesysteme (AES), Universität des Saarlandes
+
+The source code written for this project is licensed under the MIT License
+(see LICENSE). The repository also contains or references material from third
+parties. That material stays under its own license and is not relicensed by
+the LICENSE file.
+
+Eclipse BaSyx
+  The configuration files in basyx/ and the web UI extended in
+  basyx-aas-web-ui-extended/ build on Eclipse BaSyx
+  (https://github.com/eclipse-basyx), MIT License.
+
+Eclipse BaSyx DataBridge and its dependencies
+  databridge/databridge.component-1.0.0-SNAPSHOT.jar and the
+  databridge.*.jar files in databridge/lib/ are builds of the Eclipse BaSyx
+  DataBridge (https://github.com/eclipse-basyx/basyx-databridge), MIT License.
+  The remaining JAR files in databridge/lib/ are its unmodified runtime
+  dependencies (Apache Camel, Apache PLC4X, Netty, Jackson and others). Each
+  is distributed under its own license, most of them Apache-2.0, some under
+  EPL, MPL, LGPL or GPL with a linking exception. The license of a given JAR
+  is stated in its META-INF directory or on its project page.
+
+IDTA submodel templates
+  The .aasx files in IDTA-Templates/ and GUI/IDTA-templates/ and the
+  submodule IDTA-Templates/submodel-templates
+  (https://github.com/admin-shell-io/submodel-templates) are published by the
+  Industrial Digital Twin Association under CC BY 4.0.
+
+Logos
+  The logos in GUI/static/images/ belong to Universität des Saarlandes and
+  the AES chair. They are not covered by the MIT License and may not be
+  reused without permission of their owners.

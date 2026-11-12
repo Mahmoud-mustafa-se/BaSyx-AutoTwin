@@ -1,4 +1,7 @@
-# Author: Mahmoud Alnasir
+# Copyright (c) 2026 Mahmoud Mustafa
+# SPDX-License-Identifier: MIT
+#
+# Author: Mahmoud Mustafa
 # Affiliation: Lehrstuhl für Automatisierung und Energiesysteme (AES), Universität des Saarlandes
 # Project: BaSyx-AutoTwin | EnFoSaar
 
@@ -1704,15 +1707,15 @@ def deploy_official_databridge():
                         "log": log}), 500
 
 def _guess_seq_type(unit, flag, count_id):
-    """Heuristische Schätzung des Messreihen-Typs aus API-Metadaten."""
+    """Heuristically guess the measurement-series type from API metadata."""
     if count_id >= 1001:
-        return None           # virtuelle/berechnete Sensoren überspringen
+        return None  # skip virtual/computed sensors
     u = (unit or '').lower()
     if u in ('wh', 'kwh', 'varh'):
         return 'power_mm_counter_seq'
     if flag == 8 and u in ('%', 'v', 'a', 'c', 'var', 'w'):
         return 'avg_mm_gauge_seq'
-    return 'avg_mm_gauge_seq' # allgemeiner Fallback
+    return 'avg_mm_gauge_seq'
 
 def _get_oauth2_token(token_url, client_id, client_secret, scope):
     body = {'client_id': client_id, 'client_secret': client_secret,
@@ -1751,7 +1754,6 @@ def discover_ems():
             return jsonify({'status': 'error',
                             'message': f"API {resp.status_code}: {resp.text[:300]}"}), 400
         data = resp.json()
-        # Versuche generisch items zu extrahieren
         items = data if isinstance(data, list) else data.get('data', [])
         ems_list = []
         for item in items:
@@ -1778,7 +1780,7 @@ def discover_sensors():
     base          = (p.get('baseUrl') or '').rstrip('/')
     ems_id        = p.get('emsId', '')
     sensors_ep    = p.get('sensorsEndpoint', '/api/v1/customer/sensors')
-    url_template  = p.get('urlTemplate', '')  # z.B. /api/v1/customer/sensors/{id}/measurements/seq/
+    url_template  = p.get('urlTemplate', '')  # e.g. /api/v1/customer/sensors/{id}/measurements/seq/
 
     params = {}
     if ems_id:

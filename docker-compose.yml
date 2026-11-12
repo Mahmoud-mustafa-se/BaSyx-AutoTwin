@@ -1,3 +1,7 @@
+# Development defaults: every credential in this file (MongoDB, InfluxDB, Grafana)
+# is a well-known default. Override INFLUXDB_TOKEN in the environment and change
+# the passwords before exposing the stack beyond a trusted network.
+
 networks:
   basyx-network:
     driver: bridge
@@ -151,7 +155,7 @@ services:
       SUBMODEL_REPO_PATH: "http://${HOST_IP:-localhost}:${AAS_ENV_PORT:-8081}/submodels"
       CD_REPO_PATH: "http://${HOST_IP:-localhost}:${AAS_ENV_PORT:-8081}/concept-descriptions"
       AAS_DISCOVERY_PATH: "http://${HOST_IP:-localhost}:${DISCOVERY_PORT:-8084}/lookup/shells"
-      INFLUXDB_TOKEN: "S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q=="
+      INFLUXDB_TOKEN: "${INFLUXDB_TOKEN:-S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==}"
     depends_on:
       - aas-env
       - aas-registry
@@ -189,8 +193,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=influxpassword
       - DOCKER_INFLUXDB_INIT_ORG=basyx
       - DOCKER_INFLUXDB_INIT_BUCKET=hems
-      - >-
-        DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN:-S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==}
       - INFLUXD_HTTP_CORS_ENABLED=true
       - INFLUXD_HTTP_CORS_ALLOWED_ORIGINS=http://localhost:${UI_PORT:-3000},http://localhost:8080,http://${HOST_IP}:${UI_PORT:-3000},http://${HOST_IP}:${GRAFANA_PORT:-3001}
       - INFLUXD_HTTP_CORS_ALLOWED_HEADERS=Accept,Content-Type,Content-Length,Accept-Encoding,Authorization,X-CSRF-Token,X-Requested-With
@@ -228,7 +231,7 @@ services:
       - MQTT_BROKER_HOST=mosquitto
       - MQTT_BROKER_PORT=1883
       - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_TOKEN=S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==}
       - INFLUXDB_ORG=basyx
       - OCPP_CS_PORT=9000
     volumes:
@@ -262,6 +265,8 @@ services:
       - AAS_DISCOVERY_URL=http://aas-discovery:8081
       - ORCHESTRATOR_URL=http://testorchestrator:8082
       - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==}
+      - INFLUXDB_ORG=basyx
       - GRAFANA_URL=http://grafana:3000
       - MQTT_URL=tcp://mosquitto:1883
       - GUI_URL=http://${HOST_IP:-localhost}:${GUI_PORT:-5000}

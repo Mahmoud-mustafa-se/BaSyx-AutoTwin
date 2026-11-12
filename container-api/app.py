@@ -1,4 +1,7 @@
-# Author: Mahmoud Alnasir
+# Copyright (c) 2026 Mahmoud Mustafa
+# SPDX-License-Identifier: MIT
+#
+# Author: Mahmoud Mustafa
 # Affiliation: Lehrstuhl für Automatisierung und Energiesysteme (AES), Universität des Saarlandes
 # Project: BaSyx-AutoTwin | EnFoSaar
 

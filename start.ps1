@@ -1,4 +1,4 @@
-﻿# start.ps1 — Bootstrap-Skript für den AAS-Studio-Stack
+﻿# start.ps1 — bootstrap script for the BaSyx-AutoTwin stack
 #
 # 1. Detect best LAN IPv4 (filters loopback, link-local, vEthernet, WSL adapters)
 # 2. Per service: probe default port; if busy, walk +100 until a free port is found
@@ -110,7 +110,7 @@ function Find-FreePort {
     throw "Kein freier Port nahe $Default gefunden (probiert $MaxAttempts × +$Step)."
 }
 
-# Service → Default-Host-Port (Container-interne Ports bleiben wie in compose)
+# Service → default host port (container-internal ports stay as defined in docker-compose.yml)
 $portDefaults = [ordered]@{
     GUI_PORT             = 5000
     AAS_ENV_PORT         = 8081

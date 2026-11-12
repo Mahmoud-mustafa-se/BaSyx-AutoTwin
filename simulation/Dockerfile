@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY requirements*.txt ./
 
-# Split into 3 groups — jeder Layer hat eigenen Cache-Eintrag.
-# Wenn Docker bei Layer 2 abstürzt, fängt der nächste Versuch dort an.
+# Installed in three groups so each layer is cached separately: a failed
+# build resumes at the group that broke instead of starting over.
 RUN pip install --no-cache-dir --prefer-binary -r requirements-base.txt
 RUN pip install --no-cache-dir --prefer-binary -r requirements-opcua.txt
 RUN pip install --no-cache-dir --prefer-binary -r requirements-protocols.txt

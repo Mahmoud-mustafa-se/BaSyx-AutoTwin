@@ -1,4 +1,3 @@
-// State Management
 const state = {
     currentStep: 1,
     assetInfo: {},
@@ -9,7 +8,6 @@ const state = {
     globalSinks: {}        // Shared sink config (shown in Deploy page for Custom mode)
 };
 
-// Navigation
 function nextStep(step) {
     showStep(step);
 }
@@ -66,7 +64,6 @@ function showStep(stepNumber) {
     }
 }
 
-// Logic: Submodels
 function addNewSubmodel() {
     const input = document.getElementById('newSubmodelName');
     const name = input.value.trim();
@@ -415,7 +412,7 @@ function renderPropProtocolConfig(proto, savedValues) {
     updateAllConditionalFieldsAndDiscovery();
 }
 
-// ── Discovery: zeige Panel wenn OAuth2 gewählt ────────────────────────────
+// ── Discovery: show panel when OAuth2 is selected ────────────────────────────
 function updateAllConditionalFieldsAndDiscovery() {
     updateAllConditionalFields();
     const authSel = document.querySelector('[data-field="authType"]');
@@ -615,7 +612,6 @@ function renderPropSinkConfig(savedSinks) {
     const sa = savedSinks?.auto || {};
 
     container.innerHTML = `
-    <!-- ── Auto-Routing Info Banner ────────────────────────────── -->
     <div class="datasink-auto-banner">
         <div class="banner-title">✅ Automatische Datenziele <span class="banner-badge">immer aktiv</span></div>
         <p class="banner-note">Der Databridge Service sendet alle Messwerte automatisch an:</p>
@@ -764,12 +760,10 @@ function _applyImportedConfigs(configs) {
         state.submodelConfigs[smName] = cfg;
         currentPropProtocol = firstProto;
 
-        // Highlight the matching protocol card
         document.querySelectorAll('#prop-protocol-selector .protocol-card').forEach(c => {
             c.classList.toggle('active', c.dataset.proto === firstProto);
         });
 
-        // Populate connection params + target data table
         renderPropProtocolConfig(firstProto, cfg.protocolData[firstProto].source);
         propTargetRows = JSON.parse(JSON.stringify(cfg.protocolData[firstProto].targetData));
         renderPropTargetHeader();
@@ -827,15 +821,12 @@ const PROTOCOL_FIELDS = {
                     'OAuth2 Client-Credentials'],
           default: 'None',
           tooltip: 'Wähle die Authentifizierungs-Strategie. OAuth2 Client-Credentials cached + refreshed automatisch.' },
-        // Bearer
         { id: 'bearerToken', label: 'Bearer Token', type: 'password', placeholder: 'eyJhbGciOi...',
           conditional: { field: 'authType', values: ['Bearer Token'] } },
-        // Basic
         { id: 'username', label: 'Benutzername', type: 'text', placeholder: 'admin', half: true,
           conditional: { field: 'authType', values: ['Basic Auth'] } },
         { id: 'password', label: 'Passwort', type: 'password', placeholder: '***', half: true,
           conditional: { field: 'authType', values: ['Basic Auth'] } },
-        // API Key in header
         { id: 'apiKey', label: 'API-Key', type: 'password', placeholder: 'sk_live_...',
           conditional: { field: 'authType', values: ['API Key (Header)', 'API Key (Query)'] } },
         { id: 'apiKeyHeader', label: 'Header-Name', type: 'text', placeholder: 'X-API-Key', default: 'X-API-Key',
@@ -844,7 +835,7 @@ const PROTOCOL_FIELDS = {
           conditional: { field: 'authType', values: ['API Key (Query)'] } },
         // OAuth2 Client Credentials (RFC 6749 §4.4)
         { id: 'oauthTokenUrl', label: 'Token-Endpoint URL', type: 'text',
-          placeholder: 'https://auth.mypowergrid.de/realms/wendeware/protocol/openid-connect/token',
+          placeholder: 'https://auth.example.com/realms/<realm>/protocol/openid-connect/token',
           conditional: { field: 'authType', values: ['OAuth2 Client-Credentials'] } },
         { id: 'clientId', label: 'Client-ID', type: 'text', placeholder: 'your-api-client-id', half: true,
           conditional: { field: 'authType', values: ['OAuth2 Client-Credentials'] } },
@@ -1019,7 +1010,6 @@ function updateConditionalFields() {
 function updateAllConditionalFields() {
     const container = document.getElementById('protocol-config-body') || document.getElementById('prop-protocol-config-body');
     if (!container) return;
-    // Collect current values of all select fields
     const vals = {};
     container.querySelectorAll('[data-field]').forEach(el => { vals[el.dataset.field] = el.value; });
 
@@ -1447,7 +1437,6 @@ function renderProperties() {
     feather.replace();
 }
 
-// Logic: Deployment
 function uploadAASToServer(btn) {
     const name = document.getElementById('assetName').value.trim();
     if (!name) return alert('Enter Asset Name in Step 1.');
@@ -1497,7 +1486,6 @@ function uploadAASToServer(btn) {
         .then(json => {
             const resultEl = document.getElementById('deploy-result-section');
 
-            // Build details lines
             const lines = [];
             const idta = json?.idta;
             if (idta && !idta.error) {
@@ -1513,7 +1501,6 @@ function uploadAASToServer(btn) {
                 lines.push(`Grafana dashboard: <a href="${grf.fullUrl || grf.url}" target="_blank" style="color:var(--accent-primary)">${grf.fullUrl || grf.url}</a>`);
             }
 
-            // Build link buttons
             const linkBtns = [];
             if (json.aasUrl) {
                 linkBtns.push(`<a href="${json.aasUrl}" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open AAS in BaSyx Web UI</a>`);
@@ -1661,8 +1648,8 @@ window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
 });
 
-// ─── Enter-Taste Navigation ───────────────────────────────────────────────────
-// Drückt man Enter in einem Input-Feld, geht es automatisch zum nächsten Schritt
+// ─── Enter-key navigation ─────────────────────────────────────────────────────
+// Pressing Enter in an input field advances to the next step
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
     const tag = document.activeElement?.tagName;
@@ -1674,7 +1661,7 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         nextStep(2);
     } else if (step === 2) {
-        // Enter im Submodel-Name-Input → Submodel hinzufügen
+        // Enter in the submodel-name input adds the submodel
         if (document.activeElement?.id === 'newSubmodelName') {
             e.preventDefault();
             addNewSubmodel();
@@ -1683,10 +1670,9 @@ document.addEventListener('keydown', (e) => {
             showStep(3);
         }
     }
-    // In Schritt 3 und 4 kein automatisches Weiter, da viele Felder vorhanden
+    // No auto-advance in steps 3 and 4: too many fields
 });
 
-// Init
 // ── Connection Settings ───────────────────────────────────────────────
 const _PORT_KEYS = ['aas','aas_registry','sm_registry','discovery',
                     'orchestrator','influxdb','mqtt','grafana','ui'];
@@ -1698,14 +1684,12 @@ async function loadConnection() {
         const r = await fetch('/api/connection');
         const j = await r.json();
         _connDefaults = j.defaults;
-        // Populate fields
         const data = j.data || {};
         document.getElementById('conn-host').value = data.host || '';
         for (const k of _PORT_KEYS) {
             const el = document.getElementById(`port-${k}`);
             if (el) el.value = (data.ports || {})[k] ?? '';
         }
-        // Update nav badge
         const lbl = document.getElementById('conn-host-label');
         if (lbl) lbl.textContent = data.host ? data.host : 'Connection';
         // First-time auto-open

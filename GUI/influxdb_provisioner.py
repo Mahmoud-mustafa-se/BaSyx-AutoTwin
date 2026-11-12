@@ -1,4 +1,7 @@
-# Author: Mahmoud Alnasir
+# Copyright (c) 2026 Mahmoud Mustafa
+# SPDX-License-Identifier: MIT
+#
+# Author: Mahmoud Mustafa
 # Affiliation: Lehrstuhl für Automatisierung und Energiesysteme (AES), Universität des Saarlandes
 # Project: BaSyx-AutoTwin | EnFoSaar
 
@@ -14,10 +17,7 @@ import connection as _conn
 
 log = logging.getLogger("InfluxProvisioner")
 
-DEFAULT_TOKEN = os.environ.get(
-    "INFLUXDB_TOKEN",
-    "S18VeAlq042B4naMX31oqIaSGmUmOLAC-DV3VIdkxDJuAhTXLTVFEchyTSmCcUAmB7Wu94KgExzV8gJaDjzR3Q==",
-)
+DEFAULT_TOKEN = os.environ.get("INFLUXDB_TOKEN", "")
 DEFAULT_ORG = os.environ.get("INFLUXDB_ORG", "basyx")
 
 def _sanitize_bucket(name: str) -> str:

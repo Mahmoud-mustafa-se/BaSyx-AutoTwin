@@ -133,6 +133,10 @@ The startup script auto-detects the host LAN IP, scans for free ports, writes `.
 
 **Requirements:** Docker Engine + Compose v2 · Python 3
 
+Clone with `--recurse-submodules` (or run `git submodule update --init` afterwards): the official IDTA submodel templates in `IDTA-Templates/submodel-templates` are a Git submodule and are needed for submodel generation and validation.
+
+> **Security note:** the stack ships with well-known development credentials (MongoDB, InfluxDB admin password and token, Grafana `admin`/`admin`) and exposes its services on all network interfaces. Run it only in a trusted network. To use your own InfluxDB token, set the `INFLUXDB_TOKEN` environment variable before the first start; change the passwords in `docker-compose.yml` before any wider deployment.
+
 ---
 
 ## Studio Workflow
@@ -740,7 +744,7 @@ BaSyx-AutoTwin is built **on top of** the open-source [Eclipse BaSyx](https://ww
 | **Submodel Registry** | `eclipsebasyx/submodel-registry-log-mongodb:2.x` | [basyx-java-server-sdk](https://github.com/eclipse-basyx/basyx-java-server-sdk) | MIT |
 | **AAS Discovery** | `eclipsebasyx/aas-discovery:2.x` | [basyx-java-server-sdk](https://github.com/eclipse-basyx/basyx-java-server-sdk) | MIT |
 | **BaSyx Web UI** | `eclipsebasyx/aas-gui:v2` | [basyx-aas-web-ui](https://github.com/eclipse-basyx/basyx-aas-web-ui) | MIT |
-| **DataBridge (Java)** | JAR: `databridge.component-1.0.0-SNAPSHOT.jar` | [basyx-databridge](https://github.com/eclipse-basyx/basyx-databridge) | Apache 2.0 |
+| **DataBridge (Java)** | JAR: `databridge.component-1.0.0-SNAPSHOT.jar` | [basyx-databridge](https://github.com/eclipse-basyx/basyx-databridge) | MIT |
 | **basyx.aas Python SDK** | `pip install basyx-python-sdk` | [basyx-python-sdk](https://github.com/eclipse-basyx/basyx-python-sdk) | MIT |
 
 ### What BaSyx-AutoTwin adds on top
@@ -756,7 +760,7 @@ Everything **not** listed above was written specifically for this project:
 | InfluxDB provisioner | `GUI/influxdb_provisioner.py` | Creates buckets and tokens via InfluxDB API |
 | ContainerManager AAS | `GUI/create_container_manager_aas.py` | Docker container control as AAS properties |
 | Container API | `container-api/` | REST API that proxies Docker Engine commands |
-| BaSyx Web UI plugins | `custom-aas-web-ui/` | `ContainerControlPlugin` + `WebIframeViewer` added to the BaSyx Web UI |
+| BaSyx Web UI plugins | `basyx-aas-web-ui-extended/` | `ContainerControlPlugin`, `WebIframeViewer` and `GrafanaDashboardViewer` added to the BaSyx Web UI |
 | IDTA Validator | `validator/` | Validates generated submodels against official IDTA template files |
 | Hardware Simulator | `simulation/` | Simulates Modbus/MQTT/OPC-UA sensor data for testing |
 | Start scripts | `start.sh`, `start.bat`, `start.ps1` | Bootstrap: IP detection, port scan, `.env` + `connection.json` generation |
@@ -779,16 +783,17 @@ When upgrading BaSyx components, refer to the upstream repositories listed above
 │   └── templates/            HTML (Jinja2)
 ├── CustomDatabridge/         Python DataBridge service
 ├── databridge/               Official BaSyx DataBridge (Java JARs)
-├── custom-aas-web-ui/        BaSyx Web UI + custom plugins
+├── basyx-aas-web-ui-extended/  BaSyx Web UI + custom plugins
 ├── container-api/            REST API for Docker container control
-├── thies-proxy/              Modbus proxy (THIES sensor firmware workaround)
 ├── simulation/               Hardware simulator for testing
 ├── validator/                IDTA submodel template validator
 ├── basyx/                    BaSyx service configuration
 ├── IDTA-Templates/           Official IDTA submodel templates (.aasx)
 ├── start.sh                  Linux/macOS bootstrap
 ├── start.bat / start.ps1     Windows bootstrap
-└── docker-compose.yml
+├── docker-compose.yml
+├── LICENSE                   MIT License
+└── NOTICE                    Third-party components and their licenses
 ```
 
 ---
@@ -800,6 +805,16 @@ This project is under active development. You may encounter bugs, incomplete fea
 If you run into problems or have questions, please open a [Discussion](../../discussions) or contact **mahmoud.mustafa@uni-saarland.de**.
 
 All services run inside a shared Docker bridge network (`basyx-network`). When integrating external devices or services, make sure they are reachable from within that network — use the host machine's LAN IP instead of `localhost`.
+
+---
+
+## License
+
+Copyright (c) 2026 Mahmoud Mustafa
+
+BaSyx-AutoTwin is released under the [MIT License](LICENSE).
+
+Third-party components keep their own licenses: the Eclipse BaSyx DataBridge JARs and their dependencies in `databridge/lib/`, the IDTA submodel templates (CC BY 4.0) and the logos in `GUI/static/images/`. See [NOTICE](NOTICE) for details.
 
 ---
 

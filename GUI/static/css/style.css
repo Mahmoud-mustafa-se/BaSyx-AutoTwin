@@ -437,7 +437,7 @@ input::placeholder {
     color: var(--text-muted);
 }
 
-/* Default-Wert: helle, gedimmte Darstellung — zeigt an "das ist ein Vorschlag" */
+/* Default value: dimmed italic text signals "this is only a suggestion" */
 input.input-is-default {
     color: var(--text-muted);
     font-style: italic;
